@@ -19,6 +19,11 @@ module Flog::SqlFormattable
   def format_sql(sql)
     return sql if sql.blank?
 
+    #tiny_tds
+    sql = sql.gsub(/N'/, "")
+    sql = sql.gsub(/EXEC sp_executesql/, "")
+    sql = sql.gsub(/''/, "'")
+
     require "anbt-sql-formatter/formatter"
     rule = AnbtSql::Rule.new
     rule.keyword = AnbtSql::Rule::KEYWORD_UPPER_CASE
